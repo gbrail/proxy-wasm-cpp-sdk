@@ -28,6 +28,8 @@
 #include <utility>
 #include <vector>
 
+#include "proxy_wasm_externs.h"
+
 #define CHECK_RESULT(_c)                                                                           \
   do {                                                                                             \
     if ((_c) != WasmResult::Ok) {                                                                  \
@@ -288,6 +290,9 @@ public:
   virtual void onDelete() {} // Called when the stream or VM is being deleted.
   // Called when a foreign function event arrives.
   virtual void onForeignFunction(uint32_t /* foreign_function_id */, uint32_t /* data_size */) {}
+
+  // Return the current log level set in the proxy host
+  WasmResult getLogLevel(LogLevel *level) { return proxy_get_log_level(level); }
 
   using HttpCallCallback =
       std::function<void(uint32_t, size_t, uint32_t)>; // headers, body_size, trailers
